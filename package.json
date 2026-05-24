@@ -1,0 +1,18 @@
+{
+  "name": "incubyte-playwright-cucumber-js",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "npm run test:all",
+    "test:login": "npx cucumber-js --require features/support/**/*.js --require features/step_definitions/**/*.js features/login.feature",
+    "test:login:headed": "set HEADLESS=false&& npx cucumber-js --require features/support/**/*.js --require features/step_definitions/**/*.js features/login.feature",
+    "test:all": "npx cucumber-js --require features/support/**/*.js --require features/step_definitions/**/*.js features/register.feature features/login.feature",
+    "test:all:headed": "set HEADLESS=false&& npx cucumber-js --require features/support/**/*.js --require features/step_definitions/**/*.js features/register.feature features/login.feature",
+    "install:browsers": "npx playwright install"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^9.0.0",
+    "@playwright/test": "^1.60.0",
+    "playwright": "^1.40.0"
+  }
+}
