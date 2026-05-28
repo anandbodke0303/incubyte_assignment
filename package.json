@@ -8,11 +8,17 @@
     "test:login:headed": "set HEADLESS=false&& npx cucumber-js --require features/support/**/*.js --require features/step_definitions/**/*.js features/login.feature",
     "test:all": "npx cucumber-js --require features/support/**/*.js --require features/step_definitions/**/*.js features/register.feature features/login.feature",
     "test:all:headed": "set HEADLESS=false&& npx cucumber-js --require features/support/**/*.js --require features/step_definitions/**/*.js features/register.feature features/login.feature",
-    "install:browsers": "npx playwright install"
+    "install:browsers": "npx playwright install",
+    "allure:generate": "npx allure generate allure-results -o allure-report --clean",
+    "allure:open": "npx allure open allure-report",
+    "report:allure": "npm run allure:generate && npm run allure:open",
+    "test:all:report": "npm run test:all:headed && npm run report:allure"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^9.0.0",
     "@playwright/test": "^1.60.0",
-    "playwright": "^1.40.0"
+    "playwright": "^1.40.0",
+    "allure-commandline": "^2.41.0",
+    "allure-cucumberjs": "^3.9.0"
   }
 }
