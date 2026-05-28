@@ -22,7 +22,7 @@ When('I enter the all required information', async function () {
   try {
     fs.writeFileSync(outPath, JSON.stringify({ username: userData.username, password: userData.password }, null, 2));
   } catch (e) {
-    // ignore write errors
+    console.error('Failed to write registered credentials:', e);
   }
 
   // Store in world for immediate access in same run
@@ -33,19 +33,20 @@ When('I enter the all required information', async function () {
 });
 
 Then('I click on the register', async function () {
-  // Submit once; we generate robust unique username earlier to avoid duplicates
   await this.registerPage.submitRegistration();
 });
 
 Then('I verify user is redirected on homepage', async function () {
-  // Wait for a successful page response after registration
   await this.page.waitForTimeout(2000);
-  // Check if we're on a success page by verifying the URL or a success message
   const pageTitle = await this.page.title();
+  console.log('Page title after registration:', pageTitle);
   expect(pageTitle).toBeTruthy();
 });
 
 Then('I logout', async function () {
-  // Logout functionality verified - skip actual logout to avoid navigation timeouts
-  await this.page.waitForTimeout(500);
+  const logoutLink = this.page.locator('//a[text()="Log Out"]');
+  await logoutLink.click();
+  await this.page.waitForTimeout(2000);
+  const loginForm = this.page.locator('input[name="username"]');
+  expect(await loginForm.isVisible()).toBeTruthy();
 });
