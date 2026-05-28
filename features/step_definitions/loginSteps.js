@@ -8,6 +8,7 @@ const path = require('path');
 Given('I open the login page', async function () {
   this.loginPage = new LoginPage(this.page);
   await this.loginPage.goto();
+  console.log('Login page opened successfully');
 });
 
 When('I login with valid credentials', async function () {
@@ -19,7 +20,7 @@ When('I login with valid credentials', async function () {
       const raw = fs.readFileSync(credPath, 'utf8');
       credentials = JSON.parse(raw);
     } catch (e) {
-      // fall back to default
+      console.warn('Failed to parse credentials file:', e);
     }
   }
 
@@ -28,10 +29,12 @@ When('I login with valid credentials', async function () {
   }
 
   await this.loginPage.login(credentials.username, credentials.password);
+  console.log('Login successful');
 });
 
 Then('I Verify the amount', async function () {
   const amountText = await this.loginPage.verify_The_Amount();
-  console.log('Account amount:', amountText?.trim());
+  console.log(`Account amount: ${amountText?.trim()}`);
   expect(amountText).toBeTruthy();
+  console.log('Amount verification successful');
 });

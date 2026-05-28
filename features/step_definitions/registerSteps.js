@@ -6,11 +6,13 @@ const fs = require('fs');
 const path = require('path');
 
 When('I click on the register button', async function () {
+  console.log('Step: Clicking on the register button');
   this.registerPage = new RegisterPage(this.page);
   await this.registerPage.clickRegisterButton();
 });
 
 When('I enter the all required information', async function () {
+  console.log('Step: Entering registration information');
   const userData = { ...testData.register.user1 };
   // generate username with testuser prefix and 4 digit random number
   const fourDigit = Math.floor(1000 + Math.random() * 9000).toString();
@@ -34,13 +36,15 @@ When('I enter the all required information', async function () {
 
 Then('I click on the register', async function () {
   await this.registerPage.submitRegistration();
+  console.log('Registration form submitted successfully');
 });
 
 Then('I verify user is redirected on homepage', async function () {
   await this.page.waitForTimeout(2000);
   const pageTitle = await this.page.title();
-  console.log('Page title after registration:', pageTitle);
+  console.log(`Page title after registration: ${pageTitle}`);
   expect(pageTitle).toBeTruthy();
+  console.log('Homepage verification successful');
 });
 
 Then('I logout', async function () {
@@ -49,4 +53,5 @@ Then('I logout', async function () {
   await this.page.waitForTimeout(2000);
   const loginForm = this.page.locator('input[name="username"]');
   expect(await loginForm.isVisible()).toBeTruthy();
+  console.log('Logout successful - user redirected to login page');
 });
