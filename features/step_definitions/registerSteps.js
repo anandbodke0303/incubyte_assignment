@@ -41,9 +41,12 @@ Then('I click on the register', async function () {
 
 Then('I verify user is redirected on homepage', async function () {
   await this.page.waitForTimeout(2000);
-  const pageTitle = await this.page.title();
-  console.log(`Page title after registration: ${pageTitle}`);
-  expect(pageTitle).toBeTruthy();
+  const expectedWelcomeText = `Welcome ${this.registeredUsername}`;
+  const welcomeLocator = this.page.locator(`text=${expectedWelcomeText}`);
+  await welcomeLocator.waitFor({ state: 'visible', timeout: 10000 });
+  const welcomeText = await welcomeLocator.textContent();
+  console.log(`Welcome text after registration: ${welcomeText}`);
+  expect(welcomeText.trim()).toBe(expectedWelcomeText);
   console.log('Homepage verification successful');
 });
 
@@ -51,7 +54,8 @@ Then('I logout', async function () {
   const logoutLink = this.page.locator('//a[text()="Log Out"]');
   await logoutLink.click();
   await this.page.waitForTimeout(2000);
-  const loginForm = this.page.locator('input[name="username"]');
-  expect(await loginForm.isVisible()).toBeTruthy();
-  console.log('Logout successful - user redirected to login page');
+  const customerLoginHeading = this.page.locator('text=Customer Login');
+  await customerLoginHeading.waitFor({ state: 'visible', timeout: 10000 });
+  expect(await customerLoginHeading.isVisible()).toBe(true);
+  console.log('Logout successful - user redirected to Customer Login page');
 });
